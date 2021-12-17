@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Teams</title>
+<div th:replace="fragments/bootstrap_css.html"></div>
+</head>
+<body>
+<nav th:include="fragments/menu"></nav>
+	<h1>Teams</h1>
+	<table class="table table-striped" id="teamsTable">
+		<thead class="table-dark">
+			<tr>
+				<th></th>
+				<th>NAME</th>
+				<th class="text-center">ABBREVIATION</th>
+				<th class="text-center">FIRST SEASON</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="team : ${teamList}" class="align-middle">
+				<td width="30px">
+					<img th:src="@{https://www.mlbstatic.com/team-logos/{id}.svg(id=${team.id})}">
+				</td>
+				<td th:text="${team.name}">..</td>
+				<td th:text="${team.abbreviation}" class="text-center">..</td>
+				<td th:text="${team.firstYearOfPlay}" class="text-center">..</td>
+				<td>      
+					<a th:href="@{/roster/{id}(id=${team.id})}">See roster</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+<div th:replace="fragments/bootstrap_js.html"></div>
+<div th:replace="fragments/datatables_js.html"></div>
+	<script>
+		$('#teamsTable').DataTable( {
+			"paging": false,
+			"columnDefs" : [
+				{orderable: false, targets: [0,4]},
+				{searchable: false, targets: [0,4]}
+			],
+			"order": [
+				[1, 'asc']
+			]
+		} );
+	</script>
+</body>
+</html>

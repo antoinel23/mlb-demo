@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Player</title>
+<div th:replace="fragments/bootstrap_css.html"></div>
+</head>
+<body>
+<nav th:include="fragments/menu"></nav>
+</br>
+	<table class="table table-hover">
+		<thead class="table-dark">
+			<tr class="text-center">
+				<th></th>
+				<th>NAME</th>
+				<th>AGE</th>
+				<th>HEIGHT</th>
+				<th>WEIGHT</th>
+				<th>BIRTH CITY</th>
+				<th>BIRTH COUNTRY</th>
+				<th>DRAFT YEAR</th>
+				<th>POSITION</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr class="text-center align-middle">
+				<td width="100px">
+					<img th:src="@{https://content.mlb.com/images/headshots/current/60x60/{id}.png(id=${peopleInfo.id})}">
+				</td>
+				<td th:text="${peopleInfo.fullName}">..</td>
+				<td th:text="${peopleInfo.currentAge}">..</td>
+				<td th:text="${peopleInfo.height}">..</td>
+				<td th:text="${peopleInfo.weight}">..</td>
+				<td th:text="${peopleInfo.birthCity}">..</td>
+				<td th:text="${peopleInfo.birthCountry}">..</td>		
+    			<span th:switch="${peopleInfo.draftYear}">
+  					<span th:case="'0'"><td>undrafted</td></span>
+  					<span th:case="*"><td th:text="${peopleInfo.draftYear}">..</td></span>
+				</span>
+				<td th:text="${peopleInfo.primaryPosition.name}">..</td>
+			</tr>
+		</tbody>
+	</table>
+<!-- Button to switch between batting or pitching stats -->
+<ul class="nav nav-pills mb-3 justify-content-center" id="pillsTab" role="tablist">
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="pills-batting-tab" data-bs-toggle="pill" data-bs-target="#pills-batting" type="button" role="tab" aria-controls="pills-batting"><h1>Batting Stats</h1></button>
+  </li>
+  <li class="nav-item" role="presentation">
+    <button class="nav-link" id="pills-pitching-tab" data-bs-toggle="pill" data-bs-target="#pills-pitching" type="button" role="tab" aria-controls="pills-pitching"><h1>Pitching Stats</h1></button>
+  </li>
+</ul>
+<!-- Player stats -->
+<div class="tab-content" id="pillsTabContent">
+	<!-- Batting stats -->
+ 	<div class="tab-pane fade" id="pills-batting" role="tabpanel" aria-labelledby="pills-batting-tab">
+		<table class="table table-hover">
+			<thead class="table-dark">
+				<tr class="text-center">
+					<th>YEAR</th>
+					<th>TEAM</th>
+					<th>AB</th>
+					<th>R</th>
+					<th>H</th>
+					<th>HR</th>
+					<th>RBI</th>
+					<th>SB</th>
+					<th>AVG</th>
+					<th>OBP</th>
+					<th>OPS</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- The if condition make sure the row is not a cumulative stat line caused by an in-season trade -->
+				<tr th:each="split : ${battingStats}" class="text-center">
+					<span th:if="${split?.team}">
+						<td th:utext="${split.season}">..</td>
+						<td th:utext="${split.team.name}">..</td>
+						<td th:utext="${split.stat.atBats}">..</td>
+						<td th:utext="${split.stat.runs}">..</td>
+						<td th:utext="${split.stat.hits}">..</td>
+						<td th:utext="${split.stat.homeRuns}">..</td>
+						<td th:utext="${split.stat.rbi}">..</td>
+						<td th:utext="${split.stat.stolenBases}">..</td>
+						<td th:utext="${split.stat.avg}">..</td>
+						<td th:utext="${split.stat.obp}">..</td>
+						<td th:utext="${split.stat.ops}">..</td>
+					</span>
+				</tr>
+			</tbody>
+		</table>
+	<canvas class="my-4 w-100" id="offenseChart"></canvas>
+	</div>
+  	<!-- Pitching stats -->
+  	<div class="tab-pane fade" id="pills-pitching" role="tabpanel" aria-labelledby="pills-pitching-tab">
+		<table class="table table-hover">
+			<thead class="table-dark">
+				<tr class="text-center">
+					<th>YEAR</th>
+					<th>TEAM</th>
+					<th>W</th>
+					<th>L</th>
+					<th>ERA</th>
+					<th>G</th>
+					<th>GS</th>
+					<th>SV</th>
+					<th>IP</th>
+					<th>SO</th>
+					<th>WHIP</th>
+				</tr>
+			</thead>
+			<tbody>
+				<!-- The if condition make sure the row is not a cumulative stat line caused by an in-season trade -->
+				<tr th:each="split : ${pitchingStats}" class="text-center">
+					<span th:if="${split?.team}">
+						<td th:utext="${split.season}">..</td>
+						<td th:utext="${split.team.name}">..</td>
+						<td th:utext="${split.stat.wins}">..</td>
+						<td th:utext="${split.stat.losses}">..</td>
+						<td th:utext="${split.stat.era}">..</td>
+						<td th:utext="${split.stat.gamesPlayed}">..</td>
+						<td th:utext="${split.stat.gamesStarted}">..</td>
+						<td th:utext="${split.stat.saves}">..</td>
+						<td th:utext="${split.stat.inningsPitched}">..</td>
+						<td th:utext="${split.stat.strikeOuts}">..</td>
+						<td th:utext="${split.stat.whip}">..</td>
+					</span>
+				</tr>
+			</tbody>
+		</table>
+	<canvas class="my-4 w-100" id="pitchingChart"></canvas>
+  	</div>
+</div>
+<div th:replace="fragments/bootstrap_js.html"></div>
+	<!-- The following script check the primary position of this player to know whether pitching or batting stats should be active by default -->
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+			var positionType = /*[[${peopleInfo.primaryPosition.type}]]*/ 'false';
+			
+			if(positionType === "Pitcher"){
+				var triggerEl = document.querySelector('#pillsTab button[data-bs-target="#pills-pitching"]')
+				bootstrap.Tab.getOrCreateInstance(triggerEl).show()
+			} else {
+				var triggerEl = document.querySelector('#pillsTab button[data-bs-target="#pills-batting"]')
+				bootstrap.Tab.getOrCreateInstance(triggerEl).show()
+			}	
+		/*]]>*/
+	</script>
+	<div th:replace="fragments/chart_js.html"></div>
+	<!-- The following script fill the graph charts -->
+	<script th:inline="javascript">
+		/*<![CDATA[*/
+			var opsChart = /*[[${opsChart}]]*/ '';
+			var whipChart = /*[[${whipChart}]]*/ '';
+		
+			if(opsChart.labels.length > 0){
+				var ctx = document.getElementById('offenseChart')
+				var myChart = new Chart(ctx, {
+					type: 'line',
+					data: {
+						labels: opsChart.labels,
+						datasets: [{
+					    	data: opsChart.data,
+							label: 'On-base Plus Slugging (OPS)',
+							borderColor: '#007bff',
+							pointBackgroundColor: '#007bff'
+						}]
+					}
+				})
+			}
+			
+			if(whipChart.labels.length > 0){
+				var ctx = document.getElementById('pitchingChart')
+				var myChart = new Chart(ctx, {
+					type: 'line',
+					data: {
+						labels: whipChart.labels,
+						datasets: [{
+					    	data: whipChart.data,
+							label: 'Walks And Hits Per Inning Pitched (WHIP)',
+							borderColor: '#007bff',
+							pointBackgroundColor: '#007bff'
+						}]
+					}
+				})
+			}
+		/*]]>*/
+	</script>
+</body>
+</html>

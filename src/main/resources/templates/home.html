@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Home</title>
+<div th:replace="fragments/bootstrap_css.html"></div>
+</head>
+<body>
+<nav th:include="fragments/menu"></nav>
+	<h1>Welcome</h1>
+	<h5>Project: This web application displays MLB teams, rosters and player statistics.</h5>
+	The application include:
+	<ul>
+		<li>A page listing all MLB teams</li>
+		<li>A page for each team showing the players on their roster</li>
+		<li>A page for each player displaying some biographical information (name, age, height, weight, etc.) and tables of the player’s seasonal batting and pitching statistics</li>
+	</ul>
+	<p>
+		<em>The data and images is retrieved directly from the MLB StatsAPI.</em>
+	</p>
+	<img src="https://www.mlbstatic.com/team-logos/league-on-dark/1.svg">
+<div th:replace="fragments/bootstrap_js.html"></div>
+</body>
+</html>
