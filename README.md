@@ -8,11 +8,11 @@
 
 ## Introduction
 This web application displays MLB teams, rosters and player statistics.
-You can see the deployed application on this URL: [54.88.142.165:8080](54.88.142.165:8080)
+You can see the deployed application on this URL: [54.88.142.165:8080](http://54.88.142.165:8080/)
 
 ## How to run locally
 #### Option 1 (the simplest version using JAR file):
-**Note:** Java 11 or + needs to be installed on your computer to run the project using this JAR otherwise you can use option 2. You can download java [here](oracle.com/java/technologies/downloads/#java11). 
+**Note:** Java 11 or + needs to be installed on your computer to run the project using this JAR otherwise you can use option 2. You can download java [here](https://oracle.com/java/technologies/downloads/#java11). 
 1. Clone the repo
 2. Open a terminal in the repo folder and run the command:
 ```bash
