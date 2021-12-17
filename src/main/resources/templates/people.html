@@ -147,43 +147,15 @@
 		/*]]>*/
 	</script>
 	<div th:replace="fragments/chart_js.html"></div>
-	<!-- The following script fill the graph charts -->
 	<script th:inline="javascript">
+	// Calling my script located in src/main/resources/static/build_chart.js
+	// The method receives the following parameters as input: the statistics, the canvas id and the title
 		/*<![CDATA[*/
 			var opsChart = /*[[${opsChart}]]*/ '';
 			var whipChart = /*[[${whipChart}]]*/ '';
-		
-			if(opsChart.labels.length > 0){
-				var ctx = document.getElementById('offenseChart')
-				var myChart = new Chart(ctx, {
-					type: 'line',
-					data: {
-						labels: opsChart.labels,
-						datasets: [{
-					    	data: opsChart.data,
-							label: 'On-base Plus Slugging (OPS)',
-							borderColor: '#007bff',
-							pointBackgroundColor: '#007bff'
-						}]
-					}
-				})
-			}
 			
-			if(whipChart.labels.length > 0){
-				var ctx = document.getElementById('pitchingChart')
-				var myChart = new Chart(ctx, {
-					type: 'line',
-					data: {
-						labels: whipChart.labels,
-						datasets: [{
-					    	data: whipChart.data,
-							label: 'Walks And Hits Per Inning Pitched (WHIP)',
-							borderColor: '#007bff',
-							pointBackgroundColor: '#007bff'
-						}]
-					}
-				})
-			}
+			build(opsChart, 'offenseChart', 'On-base Plus Slugging (OPS)');
+			build(whipChart, 'pitchingChart', 'Walks And Hits Per Inning Pitched (WHIP)');
 		/*]]>*/
 	</script>
 </body>

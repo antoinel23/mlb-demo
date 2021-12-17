@@ -35,16 +35,9 @@
 <div th:replace="fragments/bootstrap_js.html"></div>
 <div th:replace="fragments/datatables_js.html"></div>
 	<script>
-		$('#teamsTable').DataTable( {
-			"paging": false,
-			"columnDefs" : [
-				{orderable: false, targets: [0,4]},
-				{searchable: false, targets: [0,4]}
-			],
-			"order": [
-				[1, 'asc']
-			]
-		} );
+	// Calling my script located in src/main/resources/static/customize_table.js
+	// The method receives the following parameters as input: the table id, the unsortable columns and the unsearchable columns
+	customize(teamsTable, [0,4], [0,4]);
 	</script>
 </body>
 </html>
