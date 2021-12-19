@@ -62,6 +62,7 @@ The project currently has three modules which are each based on a specific endpo
 The objects inside the directory “src/main/java/com/mlb/demo/entity” have been designed based on the JSON hierarchy returned by each endpoint of the MLB StatsAPI. To put it simply, the object Player inside the module Roster is different from the object People in the module People because of the JSON  structure I receive from the MLB API.
 
 The project also has a module based on data retrieved from BaseballSavant: [https://baseballsavant.mlb.com/](https://baseballsavant.mlb.com/) 
+
 4. Leaderboards:
    * This module get a csv file containing league top performers using the "Custom Leaderboard" functionality 
 
