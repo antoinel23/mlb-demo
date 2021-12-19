@@ -1,13 +1,13 @@
 //The following script customize the the tables
-function customize(idTable, unsortable, unsearchable) {
+function customize(idTable, unsortable, unsearchable, order = [1, 'asc'], paging = false) {
 	$(idTable).DataTable({
-		"paging": false,
+		"paging": paging,
 		"columnDefs": [
 			{ orderable: false, targets: unsortable },
 			{ searchable: false, targets: unsearchable }
 		],
 		"order": [
-			[1, 'asc']
+			order
 		]
 	});
 }

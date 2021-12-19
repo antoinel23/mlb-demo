@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Leaderboards</title>
+<div th:replace="fragments/bootstrap_css.html"></div>
+</head>
+<body>
+<nav th:include="fragments/menu"></nav>
+	<h1 class="text-center">Top MLB Performers Leaderboard</h1>
+	<div class="container">
+  		<div class="row">
+    		<div class="col">
+      			<h4 class="text-center">Batting - Average Exit Velocity</h4>
+      			<table class="table table-striped" id="BattingTable">
+      				<thead class="table-dark">
+						<tr>
+							<th>NAME</th>
+							<th class="text-center" >EV</th>
+						</tr>
+					</thead>
+      				<tbody>
+      					<tr th:each="leader: ${batting}" class="align-middle">
+							<td>
+								<a th:text="${leader.key.fullName}" th:href="@{/player/{id}(id=${leader.key.id})}"></a>
+							</td>
+							<td th:text="${leader.value}" class="text-center">..</td>
+						</tr>
+      				</tbody>
+      			</table>
+    		</div>
+    		<div class="col">
+      			<h4 class="text-center">Pitching - Expected Weighted On-base Average</h4>
+      			<table class="table table-striped" id="PitchingTable">
+      			    <thead class="table-dark">
+						<tr>
+							<th>NAME</th>
+							<th class="text-center">xwOBA</th>
+						</tr>
+					</thead>
+      				<tbody>
+      					<tr th:each="leader: ${pitching}" class="align-middle">
+							<td>
+								<a th:text="${leader.key.fullName}" th:href="@{/player/{id}(id=${leader.key.id})}"></a>
+							</td>
+							<td th:text="${leader.value}" class="text-center">..</td>
+						</tr>
+      				</tbody>
+      			</table>
+    		</div>
+  		</div>
+	</div>
+<div th:replace="fragments/bootstrap_js.html"></div>
+<div th:replace="fragments/datatables_js.html"></div>
+	<script>
+	// Calling my script located in src/main/resources/static/customize_table.js
+	// The method receives the following parameters as input: the table id, the unsortable columns, the unsearchable columns, the order if not using default value and a boolean to activate paging
+	customize(BattingTable, [0], [1], [1, 'desc'], true);
+	customize(PitchingTable, [0], [1], [1, 'asc'], true);
+	</script>
+</body>
+</html>
